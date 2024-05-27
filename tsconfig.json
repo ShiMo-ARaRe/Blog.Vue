@@ -1,3 +1,5 @@
+// tsconfig.json 是 TypeScript 项目的配置文件,它用于定义编译 TypeScript 代码的规则和选项。
+
 {
   "compilerOptions": {
     "target": "esnext",

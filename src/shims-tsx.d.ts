@@ -1,3 +1,5 @@
+// 这段代码是一个 TypeScript 声明文件,用于在 Vue.js 应用程序中支持 JSX 语法。
+
 import Vue, { VNode } from 'vue'
 
 declare global {
