@@ -5,7 +5,8 @@ import Home from "./views/Home.vue";
 import FormVuex from "./views/FormVuex.vue";
 import Content from "./views/content.vue";
 import Login from "./views/Login.vue";
-import LoginCallbackView from "./views/LoginCallbackView.vue";
+import Register from "./views/Register.vue";
+// import LoginCallbackView from "./views/LoginCallbackView.vue";
 import Editor from "./views/Editor.vue";
 
 // import applicationUserManager from "./Auth/applicationusermanager";
@@ -44,6 +45,11 @@ const router = new Router({
       path: "/Login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/Register",
+      name: "Register",
+      component: Register
     },
     // {
     //   path: "/callback",

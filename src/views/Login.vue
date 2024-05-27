@@ -73,8 +73,8 @@ export default {
     return {
         isLogin:false,  //用于标记当前用户是否处于登录状态
       user: { //定义了一个默认的用户名和密码。
-          name:"admins",
-          pass:"admins",
+          name:"",
+          pass:"",
       },
       rules: {  // 定义了表单验证规则,要求用户名和密码不能为空。
         name: [{ required: true, message: "用户名不能为空", trigger: "blur" }],

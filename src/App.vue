@@ -18,8 +18,7 @@
               </a>
               <!-- href="https://ids.neters.club/account/register" -->
               <a
-                href="/"
-                target="_blank"
+                href="/register"
                 class="header-container-userinfo-login header-container-user-btn header-container-hv header-container-user-size"
                 role="button"
                 tabindex="-1"

@@ -92,8 +92,7 @@ export default {
         // 必选参数  res是一个函数，函数接收的response为上传成功时服务器返回的数据
         // 你必须把返回的数据中所包含的图片地址 return 回去
         res: respnse => {
-        
-          console.log(respnse.response);
+          console.log("图片地址" + respnse.response);
           return "/"+respnse.response;
         },
         methods: "POST", // 可选参数 图片上传方式  默认为post
