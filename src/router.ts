@@ -27,11 +27,11 @@ const router = new Router({
       name: "Editor",
       component: Editor
     },
-    {
-      path: "/Vuex",
-      name: "Vuex",
-      component: FormVuex
-    },
+    // {
+    //   path: "/Vuex",
+    //   name: "Vuex",
+    //   component: FormVuex
+    // },
     {
       path: "/Content/:id",
       name: "Content",
@@ -45,25 +45,27 @@ const router = new Router({
       name: "Login",
       component: Login
     },
-    {
-      path: "/callback",
-      name: "LoginCallbackView",
-      component: LoginCallbackView
-    },
-    {
-      path: "/about",
-      name: "about",
-      /*  指定了当这个路由被匹配时,要渲染的组件。
-          这里使用了动态导入(dynamic import)的方式,也就是说组件会在需要时才被加载,而不是在应用程序启动时就全部加载。*/
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Form.vue")
-    },
-    {
-      path: "/home2",
-      name: "home2",
-      component: () =>
-        import(/* webpackChunkName: "about" */ "./views/Home2.vue")
-    }
+    // {
+    //   path: "/callback",
+    //   name: "LoginCallbackView",
+    //   component: LoginCallbackView
+    // },
+
+    // {
+    //   path: "/about",
+    //   name: "about",
+    //   /*  指定了当这个路由被匹配时,要渲染的组件。
+    //       这里使用了动态导入(dynamic import)的方式,也就是说组件会在需要时才被加载,而不是在应用程序启动时就全部加载。*/
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "./views/Form.vue")
+    // },
+
+    // {
+    //   path: "/home2",
+    //   name: "home2",
+    //   component: () =>
+    //     import(/* webpackChunkName: "about" */ "./views/Home2.vue")
+    // }
   ]
 });
 

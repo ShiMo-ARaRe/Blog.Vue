@@ -47,6 +47,7 @@ import { quillEditor } from "vue-quill-editor"; //调用编辑器
 import { quillRedefine } from "vue-quill-editor-upload"; // 上传图片
 
 // require styles
+// Quill 编辑器的样式文件
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
@@ -55,31 +56,36 @@ export default {
   data() {
     return {
       infoForm: {
-        btitle: "",
-        bsubmitter: "",
-        bcategory: "技术博文",
-        bcontent: ""
+        btitle: "", //博文的标题
+        bsubmitter: "", //提交人
+        bcategory: "技术博文",  //分类
+        bcontent: ""  //内容
       },
-      editorOption: {},
+      editorOption: {}, //用于配置富文本编辑器的参数,比如图片上传的设置等
       //表单验证
-      rules: {
-        btitle: [{ required: true, message: "请输入标题", trigger: "blur" }],
+      rules: {  //定义了表单验证的规则，这些验证规则将在表单提交时起作用,确保用户输入了必要的信息。
+        //规定了标题字段是必填的,并在验证未通过时显示错误提示
+        btitle: [{ required: true, message: "请输入标题", trigger: "blur" }], 
+        //规定了内容字段是必填的,并在验证未通过时显示错误提示。
         bcontent: [
           { required: true, message: "请输入详细内容", trigger: "blur" }
         ]
       }
     };
   },
-  computed: {
+  computed: { //计算属性
     editor() {
-      var quill=this.$refs.myQuillEditor.quill;
-      var toolbar = quill.getModule('toolbar');
-      toolbar.addHandler('image', imageUpload);
-      return this.$refs.myQuillEditor.quill;
+      var quill=this.$refs.myQuillEditor.quill;//获取到了 Quill 富文本编辑器的实例
+      var toolbar = quill.getModule('toolbar');//然后通过 getModule 方法获取到了工具栏模块
+      /*  在 Quill 富文本编辑器中,当用户点击"图片"按钮时,
+          编辑器会调用 toolbar.addHandler('image', imageUpload) 指定的 imageUpload 函数来处理上传图片的逻辑。
+          如果您的前端代码中没有定义 imageUpload 函数,那么就会导致无法正确处理图片上传的请求,进而出现 400 Bad Request 错误。*/
+      toolbar.addHandler('image', imageUpload);//它给工具栏的 image 按钮添加了一个自定义的处理函数 imageUpload
+      return this.$refs.myQuillEditor.quill;//最后,这个计算属性返回了 Quill 编辑器的实例
     }
   },
-  created() {
-    this.editorOption = quillRedefine({
+  created() { //在组件创建时被调用
+    this.editorOption = quillRedefine({ //调用了 quillRedefine 函数来对 editorOption 对象进行配置
       // 图片上传的设置
       uploadConfig: {
         action: "/images/Upload/Pic", // 必填参数 图片上传地址
@@ -94,7 +100,7 @@ export default {
         name: "img", // 可选参数 文件的参数名 默认为img
         size: 500, // 可选参数   图片限制大小，单位为Kb, 1M = 1024Kb
         accept: "image/png, image/gif, image/jpeg, image/bmp, image/x-icon", // 可选参数 可上传的图片格式
-        header: (xhr, formData) => {
+        header: (xhr, formData) => {  //用于在上传请求头中添加 Authorization 头,它可能会用于身份验证。
               xhr.setRequestHeader('Authorization',"Bearer "+localStorage.Token);
               // formData: 表单对象
               // formData.append('Name', "laozhang")
@@ -110,24 +116,26 @@ export default {
     //初始化
   },
   methods: {
-    onEditorReady(editor) {},
-    onSubmit() {
+    onEditorReady(editor) {}, //这个方法在富文本编辑器准备就绪时被调用。
+    onSubmit() {  //这个方法在用户提交表单时被调用。
       //提交
-      //this.$refs.infoForm.validate，这是表单验证
+      //this.$refs.infoForm 是一个对表单元素的引用,通过这个引用可以访问表单的相关方法和属性。
+      //this.$refs.infoForm.validate，这里使用了 Vue.js 的表单验证机制
       this.$refs.infoForm.validate(valid => {
-        if (valid) {
+        if (valid) {  //如果 valid 为 true，则表示表单验证通过。
           console.log(this.infoForm);
-          var postPara = this.infoForm;
-          this.$api.post("Blog", postPara, r => {
-            if (r.success) {
+          var postPara = this.infoForm; //this.infoForm 是一个包含了表单数据的对象。
+          this.$api.post("Blog", postPara, r => { //使用 this.$api.post 方法向服务器发送一个 POST 请求,将 postPara 作为请求参数。
+            //r代表服务器的响应数据
+            if (r.success) {  //如果响应成功
               var id = r.response;
-              this.$notify({
+              this.$notify({  //显示一个成功提示
                 type: "success",
                 message: "添加成功，感谢技术分享!",
                 duration: 3000
               });
-              this.$router.replace(`/content/${id}`);
-            } else {
+              this.$router.replace(`/content/${id}`);//导航到新添加博文的详情页面
+            } else {  //如果响应失败,它会显示一个错误提示,并将错误信息存储在 errorMsg 变量中。
               var errorMsg = r.msg;
               this.$message({
                 type: "error",
@@ -135,16 +143,17 @@ export default {
                 showClose: true
               });
             }
-            this.list = r.data;
-            this.page = r.page;
-            this.TotalCount = r.pageCount;
+            //它会更新一些组件状态,包括 list、page、TotalCount 和 isShow。这些状态可能用于分页、列表展示等功能。
+            this.list = r.data; //博客列表数据
+            this.page = r.page; //页码
+            this.TotalCount = r.pageCount; //博客总数
             this.isShow = false;
           });
         }
       });
     }
   },
-  components: {
+  components: { //定义了这个组件所使用的其他子组件
     //使用编辑器
     quillEditor,
     quillRedefine

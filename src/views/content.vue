@@ -83,9 +83,9 @@ export default {
   components: { },
   data() {
     return {
-      id: this.$route.params.id,
-      dat: {},
-      isShow: true
+      id: this.$route.params.id,    // 从路由中获取的 ID 参数
+      dat: {},  //用于存储从服务器获取的数据
+      isShow: true  //是否显示加载中的内容,初始值为 true。
     };
   },
   created() {
@@ -94,12 +94,15 @@ export default {
   methods: {
     getData() {
       this.$api.get("Blog/" + this.id, null, r => {
+        //请求成功后,它会将响应数据 r.response 赋值给 this.dat,并将 this.isShow 设置为 false。
         this.dat = r.response;
         this.isShow = false;
       });
     }
   },
   watch: {
+    /*  当路由变化时,它会重置 this.dat 为空对象,将 this.isShow 设置为 true,
+        获取新的 this.id 值,然后再次调用 this.getData() 方法获取数据。*/
     $route(to) {
       this.dat = {};
       this.isShow = true;
@@ -109,5 +112,6 @@ export default {
   }
 };
 </script>
+
 <style>
 </style>

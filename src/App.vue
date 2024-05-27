@@ -16,8 +16,9 @@
               >
                 <span>登录</span>
               </a>
+              <!-- href="https://ids.neters.club/account/register" -->
               <a
-                href="https://ids.neters.club/account/register"
+                href="/"
                 target="_blank"
                 class="header-container-userinfo-login header-container-user-btn header-container-hv header-container-user-size"
                 role="button"
@@ -28,7 +29,7 @@
             </template>
             <template v-else>
               <a
-                href="https://ids.neters.club/"
+                href="/"
                 class="header-container-banner-item-btn"
               >{{ sysUserName }}</a>
               <a
@@ -46,11 +47,11 @@
             <div class>
               <div class="header-container-banner-item">
                 <a class="header-container-banner-item-btn" href="/">首页</a>
-                <a
+                <!-- <a
                   class="header-container-banner-item-btn"
                   href="http://vueadmin.neters.club/"
                   target="_blank"
-                >Admin管理后台</a>
+                >Admin管理后台</a> -->
               </div>
             </div>
           </div>
@@ -63,47 +64,65 @@
 </template>
 
 <script>
-import applicationUserManager from "./Auth/applicationusermanager";
-import userAuth from "./Auth/UserAuth";
+// import applicationUserManager from "./Auth/applicationusermanager";
+// import userAuth from "./Auth/UserAuth";
+import router from "./router";
 
 export default {
   name: "app",
-  mixins: [userAuth],
+  /*  Mixin 是一种在 Vue 组件之间共享功能的方式。
+      在这里,组件使用了一个名为 userAuth 的 Mixin,它可能包含了一些与用户认证相关的功能。*/
+  // mixins: [userAuth],
   data: function() {
     return {
       sysUserName: ""
     };
   },
-  updated() {
+  updated() { //这是组件的 updated 生命周期钩子函数,在组件更新后被调用
     this.sysUserName = window.localStorage.getItem("USER_NAME") || "";
+
   },
-  created() {
+  created() { //这是组件的 created 生命周期钩子函数,在组件创建后被调用。
     this.sysUserName = window.localStorage.getItem("USER_NAME") || "";
+
   },
   watch: {
-    $route: async function(to, from) {
+    $route: async function(to, from) {  //监听 $route 对象的变化。当路由发生变化时,这个观察器函数会被调用。
       //这里使用Id4授权认证，用Jwt，请删之；
       // await this.refreshUserInfo();
     }
   },
   methods: {
     async login() {
-      try {
-        await applicationUserManager.login();
-      } catch (error) {
-        console.log(error);
-        this.$root.$emit("show-snackbar", { message: error });
-      }
+      // Id4版本的登录方式
+      // try {
+      //   await applicationUserManager.login();
+      // } catch (error) {
+      //   console.log(error);
+      //   this.$root.$emit("show-snackbar", { message: error });
+      // }
+
+      // Jwt版本的登录方式
+      await router.replace({
+            path: "/login",
+            query: { redirect: router.currentRoute.fullPath }
+          });
     },
     async logout() {
-      try {
-        window.localStorage.removeItem("USER_NAME");
-        await applicationUserManager.logout();
-        this.$store.commit("saveToken", "");
-      } catch (error) {
-        console.log(error);
-        this.$root.$emit("show-snackbar", { message: error });
-      }
+      // Id4版本的注销方式
+      // try {
+      //   window.localStorage.removeItem("USER_NAME");
+      //   await applicationUserManager.logout();
+      //   this.$store.commit("saveToken", "");
+      // } catch (error) {
+      //   console.log(error);
+      //   this.$root.$emit("show-snackbar", { message: error });
+      // }
+
+      // Jwt版本的注销方式
+      this.sysUserName="";
+      window.localStorage.removeItem("USER_NAME");
+      this.$store.commit("saveToken", "");  //清空token
     }
   }
 };

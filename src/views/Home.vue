@@ -79,22 +79,22 @@
             <div class="rbox">
                 <div class="card">
                     <h2></h2>
-                    <p>Nick：laozhang is phi</p>
+                    <p>Nick：F Z J </p>
                     <p>Work：.net core & Vue</p>
-                    <p>Add：Peking Haidian</p>
-                    <p>Email：3143422472@qq.com</p>
+                    <p>Add：Hubei Huangshi</p>
+                    <p>Email：2366088044@qq.com</p>
                     <ul class="linkmore">
                         <li>
-                            <a href="http://laozhang-is-phi.cnblogs.com/" target="_blank" class="iconfont icon-zhuye" title="网站地址"></a>
+                            <a href="https://space.bilibili.com/500974396" target="_blank" class="iconfont icon-zhuye" title="B站地址"></a>
                         </li>
                         <li>
-                            <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=3143422472@qq.com" target="_blank" class="iconfont icon-youxiang" title="我的邮箱"></a>
+                            <a href="http://mail.qq.com/cgi-bin/qm_share?t=qm_mailme&amp;email=2366088044@qq.com" target="_blank" class="iconfont icon-youxiang" title="我的邮箱"></a>
                         </li>
                         <li>
-                            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=3143422472&amp;site=qq&amp;menu=yes" target="_blank" class="iconfont icon---" title="QQ联系我"></a>
+                            <a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2366088044&amp;site=qq&amp;menu=yes" target="_blank" class="iconfont icon---" title="QQ联系我"></a>
                         </li>
                         <li>
-                            <a href="https://github.com/anjoy8" target="_blank" class="iconfont icon-weixin" title="github"></a>
+                            <a href="https://github.com/ShiMo-ARaRe" target="_blank" class="iconfont icon-weixin" title="github"></a>
                         </li>
                     </ul>
                     <p style="float: left;">过期时间：{{expDate}}</p>
@@ -105,12 +105,12 @@
                     <ul>
                         <li></li>
                         <li><a target="_blank"
-                               href="https://www.cnblogs.com/laozhang-is-phi/p/9495618.html#autoid-1-0-0">系列教程一：.netcore+vue
+                               href="http://120.76.99.240/">项目一：.netcore+vue
                             前后端分离!</a></li>
                         <li><a target="_blank"
-                               href="https://www.cnblogs.com/laozhang-is-phi/p/9806335.html#autoid-1-0-0">系列教程二：DDD领域驱动设计</a>
+                               href="http://120.76.99.240:8080/">项目二：微服务架构</a>
                         </li>
-                        <li><a target="_blank"
+                        <!-- <li><a target="_blank"
                                href="https://www.cnblogs.com/laozhang-is-phi/p/10236645.html#autoid-2-1-0">系列教程三：Nuxt
                             TiBug系统</a></li>
                         <li><a target="_blank"
@@ -118,7 +118,7 @@
                             后台管理系统</a></li>
                         <li><a target="_blank"
                                href="https://www.cnblogs.com/laozhang-is-phi/p/10483922.html#autoid-3-0-0">系列教程五：IdentityServer4
-                            授权服务器</a></li>
+                            授权服务器</a></li> -->
                     </ul>
                 </div>
 
@@ -141,50 +141,63 @@
 
 <script>
 // @ is an alias to /src
-import util from "../../util/date";
+import util from "../../util/date"; //引入了 util 工具类,用于格式化日期
 
 export default {
   name: "home",
   components: {},
   data() {
     return {
-      page: 1,
-      TotalCount: 1,
-      pictLoading: true,
-      isShow: true,
-      list: [],
-      expDate: ""
+      page: 1,  //当前页码,初始值为 1。
+      TotalCount: 1,  //博客总数,初始值为 1。
+      pictLoading: true,  //是否显示加载中的样式,初始值为 true。
+      isShow: true, //是否显示加载中的内容,初始值为 true。
+      list: [], //博客列表数据。
+      // expDate: "" //用户登录过期时间,从 localStorage 中获取。
     };
   },
   created() {
-    this.expDate = window.localStorage.getItem("USER_EXP") || "";
+    // this.expDate = window.localStorage.getItem("USER_EXP") || ""; //在组件创建时,从 localStorage 中获取用户登录过期时间。
   },
   mounted() {
+    //在组件挂载完成时,调用 getData() 方法获取博客列表数据,同时从 localStorage 中获取用户登录过期时间。
     this.getData();
-    this.expDate = window.localStorage.getItem("USER_EXP") || "";
+    // this.expDate = window.localStorage.getItem("USER_EXP") || "";
   },
   methods: {
+    //格式化博客的创建时间,使用 util.formatDate.format() 方法将时间格式化为 "yyyy-MM-dd"。
     formatCreateTime: function(row) {
       return !row.bCreateTime || row.bCreateTime == ""
         ? ""
         : util.formatDate.format(new Date(row.bCreateTime), "yyyy-MM-dd");
     },
+    /*  获取博客列表数据,根据当前页码 page 发送 GET 请求到后端接口 Blog/?page=xxx。
+        请求成功后,更新 list、page、TotalCount 和 isShow、pictLoading 状态。*/
     getData() {
-      var that = this;
-      var urlPage = that.$route.query.page;
+      var that = this;  //将当前组件实例的 this 引用保存在 that 变量中。这是为了在回调函数中能够访问组件实例的属性和方法。
+      // 获取 URL 中 page 参数的值,并将其赋值给 that.page 变量。这样可以在页面刷新或通过链接访问时,保持当前的分页状态。
+      var urlPage = that.$route.query.page; 
       if (urlPage) {
         that.page = urlPage;
       }
       this.$api.get("Blog/?page=" + that.page, { test: 33 }, r => {
-        this.list = r.response.data;
-        this.page = r.response.page;
-        this.TotalCount = r.response.pageCount;
-        this.isShow = false;
-        this.pictLoading = false;
+        //第二个参数 { test: 33 } 是请求的查询参数,在这里是一个测试参数。
+        /*第三个参数是请求成功后的回调函数 r => { ... }。
+          在回调函数中,先将服务器返回的数据赋值给 this.list。
+          然后将响应中的 page 和 pageCount 属性分别赋值给 this.page 和 this.TotalCount。这些数据用于分页控制。
+          最后将 this.isShow 和 this.pictLoading 设置为 false,表示数据已经加载完成,可以隐藏相关的加载状态指示。*/
+        this.list = r.response.data;  //博客列表数据
+        this.page = r.response.page;  //当前页码
+        this.TotalCount = r.response.pageCount; //博客总数
+
+        //将 this.isShow 和 this.pictLoading 设置为 false,表示数据已经加载完成,可以隐藏相关的加载状态指示。
+        this.isShow = false;  //不显示加载中的内容
+        this.pictLoading = false; //不显示加载中的样式
       });
     }
   },
   watch: {
+    //监听 URL 路由的变化,如果页码发生变化,则清空 list、设置 isShow 为 true,并重新调用 getData() 方法获取数据。
     $route(to) {
       this.list = [];
       this.isShow = true;
